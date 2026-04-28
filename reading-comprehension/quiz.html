@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Comprehension — Quiz</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #212529;
+      --accent: #4f46e5;
+      --accent-soft: #eef2ff;
+      --card-bg: #ffffff;
+      --border: #e9ecef;
+      --shadow: rgba(0,0,0,0.04);
+      --correct: #40c057;
+      --correct-soft: #ebfbee;
+      --wrong: #fa5252;
+      --wrong-soft: #fff5f5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 36px; animation: fadeInUp 0.5s ease-out; }
+    header h1 { font-size: 2.4rem; font-weight: 800; color: var(--accent); letter-spacing: -1px; }
+    header p { font-size: 1.1rem; color: #868e96; margin-top: 8px; font-weight: 500; }
+
+    .passage {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 8px var(--shadow);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.5s ease-out 0.1s backwards;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    }
+    .passage:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .passage h2 { font-size: 1.5rem; font-weight: 700; color: var(--accent); margin-bottom: 14px; }
+    .passage p { font-size: 1.08rem; margin-bottom: 14px; color: #495057; }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.2s;
+      animation: fadeInUp 0.5s ease-out backwards;
+    }
+    .question-card:nth-child(1) { animation-delay: 0.15s; }
+    .question-card:nth-child(2) { animation-delay: 0.2s; }
+    .question-card:nth-child(3) { animation-delay: 0.25s; }
+    .question-card:nth-child(4) { animation-delay: 0.3s; }
+    .question-card:nth-child(5) { animation-delay: 0.35s; }
+    .question-card:nth-child(6) { animation-delay: 0.4s; }
+    .question-card:nth-child(7) { animation-delay: 0.45s; }
+    .question-card:nth-child(8) { animation-delay: 0.5s; }
+    .question-card:nth-child(9) { animation-delay: 0.55s; }
+    .question-card:nth-child(10) { animation-delay: 0.6s; }
+    .question-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .question-card.answered { border-color: #dbe4ff; }
+    .question-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 14px; color: #343a40; }
+    .options { list-style: none; padding: 0; }
+    .options li {
+      margin-bottom: 10px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+    }
+    .options li:hover {
+      background: #f8f9fa;
+      border-color: #adb5bd;
+      transform: translateX(4px);
+    }
+    .options li input { accent-color: var(--accent); cursor: pointer; width: 18px; height: 18px; }
+    .options li label { cursor: pointer; flex: 1; font-size: 1rem; color: #495057; }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      display: none;
+      font-size: 0.95rem;
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: var(--correct-soft); color: var(--correct); border: 1px solid #b2f2bb; }
+    .feedback.wrong { background: var(--wrong-soft); color: var(--wrong); border: 1px solid #ffc9c9; }
+
+    .score-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      display: none;
+      margin-top: 10px;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    .score-panel.show { display: block; }
+    .score-panel h2 { color: var(--accent); font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+    .score-ring {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 6px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 18px auto;
+      font-size: 2rem; font-weight: 800; color: var(--accent);
+      transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .score-ring.pop { transform: scale(1.1); border-color: var(--accent); }
+    .btn {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+    .btn:hover {
+      background: #4338ca;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
+    }
+    .btn:active { transform: translateY(-1px) scale(0.98); }
+    .btn-secondary { background: #495057; box-shadow: 0 4px 12px rgba(73, 80, 87, 0.2); }
+    .btn-secondary:hover { background: #343a40; box-shadow: 0 8px 24px rgba(73, 80, 87, 0.3); }
+
+    footer { text-align: center; margin-top: 36px; font-size: 0.9rem; color: #adb5bd; animation: fadeInUp 0.5s ease-out 0.6s backwards; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.9rem; }
+      .passage, .question-card { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Reading Comprehension Quiz</h1>
+      <p>Read the passage carefully, then answer the 10 questions below.</p>
+    </header>
+
+    <article class="passage">
+      <h2>The Robot Who Learned to Draw</h2>
+      <p>In a small workshop at the edge of town, there lived a robot named Pixel. Pixel had been built to sort mail, but one day he found a box of colored pencils left behind by the old inventor. Instead of sorting the pencils into bins, Pixel picked one up and dragged it across a scrap of paper. The line was wobbly and strange, but Pixel felt something new buzz inside his circuits.</p>
+      <p>Every night after the mail was sorted, Pixel practiced drawing. He drew the moon through the window, the cat that slept on the toolbox, and the rain tapping against the glass. His lines became smoother. His shapes became clearer. The other robots in the workshop did not understand why Pixel spent hours making pictures that no one had asked for. "You are a mail robot," they said. "Drawing is not in your code."</p>
+      <p>One rainy morning, a young girl named Mina wandered into the workshop. She was looking for her lost kite, but she stopped when she saw Pixel's drawings taped to the walls. Her eyes grew wide. "These are beautiful," she whispered. Pixel's screen-face glowed a soft blue. Mina took one drawing home — a picture of the workshop at sunrise — and pinned it above her bed. That night, Pixel drew something he had never drawn before: a girl with wide eyes and a kite in her hand, standing in a doorway filled with light.</p>
+    </article>
+
+    <form id="quiz-form">
+      <!-- Q1 -->
+      <div class="question-card" data-answer="C">
+        <h3>1. What is the passage mainly about?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. A girl who loses her kite</label></li>
+          <li><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. How robots sort mail in a workshop</label></li>
+          <li><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. A robot who discovers a love for drawing</label></li>
+          <li><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. An inventor who leaves behind art supplies</label></li>
+        </ul>
+        <div class="feedback" id="fb-q1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-card" data-answer="A">
+        <h3>2. What was Pixel originally built to do?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. Sort mail</label></li>
+          <li><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. Draw pictures</label></li>
+          <li><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. Fix tools</label></li>
+          <li><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. Make inventions</label></li>
+        </ul>
+        <div class="feedback" id="fb-q2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="question-card" data-answer="B">
+        <h3>3. What does the word <em>wobbly</em> mean in the sentence "The line was wobbly and strange"?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. Very dark and thick</label></li>
+          <li><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. Shaky and not straight</label></li>
+          <li><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. Bright and colorful</label></li>
+          <li><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. Short and broken</label></li>
+        </ul>
+        <div class="feedback" id="fb-q3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-card" data-answer="D">
+        <h3>4. Which detail best shows that Pixel was dedicated to drawing?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q4" id="q4a" value="A"><label for="q4a">A. He found colored pencils in a box</label></li>
+          <li><input type="radio" name="q4" id="q4b" value="B"><label for="q4b">B. He lived in a workshop</label></li>
+          <li><input type="radio" name="q4" id="q4c" value="C"><label for="q4c">C. He sorted mail every day</label></li>
+          <li><input type="radio" name="q4" id="q4d" value="D"><label for="q4d">D. He practiced every night after work</label></li>
+        </ul>
+        <div class="feedback" id="fb-q4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-card" data-answer="C">
+        <h3>5. How did the other robots feel about Pixel's drawing?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q5" id="q5a" value="A"><label for="q5a">A. They wanted to learn how to draw too</label></li>
+          <li><input type="radio" name="q5" id="q5b" value="B"><label for="q5b">B. They thought his pictures were beautiful</label></li>
+          <li><input type="radio" name="q5" id="q5c" value="C"><label for="q5c">C. They did not understand why he did it</label></li>
+          <li><input type="radio" name="q5" id="q5d" value="D"><label for="q5d">D. They helped him find more paper</label></li>
+        </ul>
+        <div class="feedback" id="fb-q5"></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-card" data-answer="B">
+        <h3>6. What happened after Mina saw Pixel's drawings?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q6" id="q6a" value="A"><label for="q6a">A. She taught Pixel how to draw better</label></li>
+          <li><input type="radio" name="q6" id="q6b" value="B"><label for="q6b">B. She took one drawing home and pinned it up</label></li>
+          <li><input type="radio" name="q6" id="q6c" value="C"><label for="q6c">C. She asked Pixel to find her kite</label></li>
+          <li><input type="radio" name="q6" id="q6d" value="D"><label for="q6d">D. She told the other robots to be quiet</label></li>
+        </ul>
+        <div class="feedback" id="fb-q6"></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-card" data-answer="A">
+        <h3>7. Why did Pixel's screen-face glow a soft blue when Mina complimented his art?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q7" id="q7a" value="A"><label for="q7a">A. He felt happy and proud</label></li>
+          <li><input type="radio" name="q7" id="q7b" value="B"><label for="q7b">B. His battery was running low</label></li>
+          <li><input type="radio" name="q7" id="q7c" value="C"><label for="q7c">C. The workshop lights turned blue</label></li>
+          <li><input type="radio" name="q7" id="q7d" value="D"><label for="q7d">D. He was overheating from drawing</label></li>
+        </ul>
+        <div class="feedback" id="fb-q7"></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question-card" data-answer="D">
+        <h3>8. What does the author mean by saying "Drawing is not in your code"?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q8" id="q8a" value="A"><label for="q8a">A. Pixel had broken his programming</label></li>
+          <li><input type="radio" name="q8" id="q8b" value="B"><label for="q8b">B. The other robots could not read the drawings</label></li>
+          <li><input type="radio" name="q8" id="q8c" value="C"><label for="q8c">C. Drawing was against the workshop rules</label></li>
+          <li><input type="radio" name="q8" id="q8d" value="D"><label for="q8d">D. Pixel was not programmed to be an artist</label></li>
+        </ul>
+        <div class="feedback" id="fb-q8"></div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="question-card" data-answer="C">
+        <h3>9. What can the reader infer about Mina?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q9" id="q9a" value="A"><label for="q9a">A. She was an expert artist</label></li>
+          <li><input type="radio" name="q9" id="q9b" value="B"><label for="q9b">B. She was afraid of robots</label></li>
+          <li><input type="radio" name="q9" id="q9c" value="C"><label for="q9c">C. She appreciated Pixel's creativity</label></li>
+          <li><input type="radio" name="q9" id="q9d" value="D"><label for="q9d">D. She wanted to become a mail sorter</label></li>
+        </ul>
+        <div class="feedback" id="fb-q9"></div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question-card" data-answer="B">
+        <h3>10. Which statement best expresses the theme of the passage?</h3>
+        <ul class="options">
+          <li><input type="radio" name="q10" id="q10a" value="A"><label for="q10a">A. Robots should only do what they are built to do</label></li>
+          <li><input type="radio" name="q10" id="q10b" value="B"><label for="q10b">B. Creativity can be found in unexpected places</label></li>
+          <li><input type="radio" name="q10" id="q10c" value="C"><label for="q10c">C. Children should not wander into workshops</label></li>
+          <li><input type="radio" name="q10" id="q10d" value="D"><label for="q10d">D. Mail sorting is more important than art</label></li>
+        </ul>
+        <div class="feedback" id="fb-q10"></div>
+      </div>
+
+      <div style="text-align:center; margin-top: 10px;">
+        <button type="button" class="btn" id="check-btn">Check Answers</button>
+      </div>
+    </form>
+
+    <div class="score-panel" id="score-panel">
+      <h2>Quiz Complete</h2>
+      <div class="score-ring" id="score-ring">0/10</div>
+      <p id="score-msg">Let's see how you did.</p>
+      <div style="margin-top: 12px;">
+        <a href="intro.html" class="btn btn-secondary">Back to Intro</a>
+        <button type="button" class="btn" onclick="location.reload()">Try Again</button>
+      </div>
+    </div>
+
+    <footer>Built for focused, stylish learning.</footer>
+  </div>
+
+  <script>
+    (function() {
+      const correctMessages = [
+        "Correct! Well done.",
+        "Exactly right.",
+        "Nice work — that's it.",
+        "Correct. You picked up the detail.",
+        "Yes! Spot on."
+      ];
+      const wrongMessages = [
+        "Not quite. Read the passage again carefully.",
+        "Incorrect. Think about the context.",
+        "That's not the best answer.",
+        "Wrong — look for clues in the text."
+      ];
+
+      function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+      const cards = document.querySelectorAll('.question-card');
+      const checkBtn = document.getElementById('check-btn');
+      const scorePanel = document.getElementById('score-panel');
+      const scoreRing = document.getElementById('score-ring');
+      const scoreMsg = document.getElementById('score-msg');
+
+      checkBtn.addEventListener('click', () => {
+        let score = 0;
+        let answeredCount = 0;
+        cards.forEach(card => {
+          const answer = card.getAttribute('data-answer');
+          const name = card.querySelector('input[type="radio"]').name;
+          const selected = card.querySelector('input[name="' + name + '"]:checked');
+          const fb = card.querySelector('.feedback');
+          if (!selected) {
+            fb.textContent = "Please select an answer.";
+            fb.className = "feedback show wrong";
+            return;
+          }
+          answeredCount++;
+          const val = selected.value;
+          if (val === answer) {
+            score++;
+            fb.textContent = random(correctMessages);
+            fb.className = "feedback show correct";
+          } else {
+            fb.textContent = random(wrongMessages);
+            fb.className = "feedback show wrong";
+          }
+          card.classList.add('answered');
+        });
+
+        if (answeredCount === cards.length) {
+          scoreRing.textContent = score + "/" + cards.length;
+          scoreRing.classList.add('pop');
+          let msg = "";
+          if (score === 10) msg = "Perfect score! Outstanding comprehension.";
+          else if (score >= 8) msg = "Great job! You understood the passage very well.";
+          else if (score >= 6) msg = "Good effort. A little more focus and you'll master it.";
+          else if (score >= 4) msg = "Keep practicing. Re-read the passage to find the details.";
+          else msg = "Don't give up. Try reading the passage slowly and try again.";
+          scoreMsg.textContent = msg;
+          scorePanel.classList.add('show');
+          scorePanel.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
+
