@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reading Comprehension — Introduction</title>
+  <style>
+    :root {
+      --bg: #f6f4ee;
+      --text: #2c2c2c;
+      --accent: #c0392b;
+      --accent-soft: #fdf2f2;
+      --card-bg: #ffffff;
+      --border: #e3dfd5;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      font-size: 2.4rem;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #6e6e6e;
+      margin-top: 8px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .card h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .card p, .card li {
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+    ul { padding-left: 22px; }
+    .passage-box {
+      background: #fafafa;
+      border-left: 4px solid var(--accent);
+      padding: 18px 22px;
+      border-radius: 0 8px 8px 0;
+      margin: 18px 0;
+      font-style: italic;
+      color: #3a3a3a;
+    }
+    .question-demo {
+      background: var(--accent-soft);
+      border: 1px solid #f5d0d0;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-top: 16px;
+    }
+    .question-demo strong {
+      color: var(--accent);
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover { background: #a93226; transform: translateY(-1px); }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #888;
+    }
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.8rem; }
+      .card { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Reading Comprehension</h1>
+      <p>Understand more. Remember longer. Think deeper.</p>
+    </header>
+
+    <section class="card">
+      <h2>What is Reading Comprehension?</h2>
+      <p>Reading comprehension is the ability to process text, understand its meaning, and integrate it with what you already know. It is not just about recognizing words — it is about grasping ideas, making connections, and drawing conclusions.</p>
+      <p>Strong readers ask themselves questions as they read. They predict what will happen next, visualize scenes, and evaluate the author’s purpose.</p>
+    </section>
+
+    <section class="card">
+      <h2>Example Passage</h2>
+      <div class="passage-box">
+        <p>Every morning, Aria walked past the old clock tower on her way to school. The hands had stopped at 11:47 decades ago, yet the townspeople left it untouched. To Aria, the frozen clock felt like a secret kept by the city — a silent reminder that some moments are meant to be remembered, not measured.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Two Kinds of Questions</h2>
+      <p>Comprehension questions usually fall into two categories:</p>
+      <ul>
+        <li><strong>Explicit (Literal):</strong> Answers are found directly in the text.</li>
+        <li><strong>Implicit (Inferential):</strong> Answers require reading between the lines.</li>
+      </ul>
+
+      <div class="question-demo">
+        <p><strong>Explicit Example:</strong> What time do the clock hands show?</p>
+        <p style="margin-left:18px; color:#555;">Answer: <em>11:47</em> — stated directly in the passage.</p>
+      </div>
+
+      <div class="question-demo">
+        <p><strong>Implicit Example:</strong> Why might the townspeople leave the clock untouched?</p>
+        <p style="margin-left:18px; color:#555;">Answer: <em>They probably value it as a historical symbol or collective memory.</em> — not directly stated, but strongly suggested.</p>
+      </div>
+    </section>
+
+    <section class="card" style="text-align:center;">
+      <h2>Ready to practice?</h2>
+      <p>Take a short quiz with 10 carefully crafted questions on a new passage.</p>
+      <a class="btn" href="quiz.html">Start the Quiz</a>
+    </section>
+
+    <footer>Built for focused, stylish learning.</footer>
+  </div>
+</body>
+</html>
