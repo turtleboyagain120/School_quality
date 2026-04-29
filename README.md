@@ -1,4 +1,4 @@
-# <div align="center">✨ 📚 ON SCREEN SCHOOL ✨</div>
+# <div align="center">✨ 📚 School quality ✨</div>
 ### <div align="center">`NEURAL LINK: THE CENTURION OVERDRIVE [ELITE EDITION]`</div>
 
 <div align="center">
