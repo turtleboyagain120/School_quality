@@ -1,0 +1,30 @@
+# ==========================================================
+# REPOSITORY: school-quality
+# STUDIO:     School Quality Studios
+# FILTER:     Python Standard Clean-up
+# ==========================================================
+
+# 🐍 Python junk (Compiled code that makes things messy)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 📁 Environments (Local libraries you don't need on GitHub)
+venv/
+.venv/
+env/
+.env/
+
+# ⚙️ OS Junk (System files from Windows or Mac)
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 🛠️ Editor Settings (VS Code or PyCharm local data)
+.vscode/
+.idea/
+
+# 📦 Build folders
+dist/
+build/
+*.egg-info/
