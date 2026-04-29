@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Quiz: Decimals & Mixed Numbers</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #212529;
+      --accent: #e8590c;
+      --accent-soft: #ffedd5;
+      --card-bg: #ffffff;
+      --border: #e9ecef;
+      --shadow: rgba(0,0,0,0.04);
+      --correct: #40c057;
+      --correct-soft: #ebfbee;
+      --wrong: #fa5252;
+      --wrong-soft: #fff5f5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    .container { max-width: 860px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 36px; }
+    header h1 { font-size: 2.4rem; font-weight: 800; color: var(--accent); }
+    header p { font-size: 1.1rem; color: #868e96; margin-top: 8px; }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.2s;
+    }
+    .question-card:nth-child(1) { animation-delay: 0.1s; }
+    .question-card:nth-child(2) { animation-delay: 0.2s; }
+    .question-card:nth-child(3) { animation-delay: 0.3s; }
+    .question-card:nth-child(4) { animation-delay: 0.4s; }
+    .question-card:nth-child(5) { animation-delay: 0.5s; }
+    .question-card:nth-child(6) { animation-delay: 0.6s; }
+    .question-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .question-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 14px; color: #343a40; }
+    .mini-passage {
+      background: #f8f9fa;
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 14px;
+      font-style: italic;
+      color: #495057;
+    }
+    .options { list-style: none; padding: 0; }
+    .options li {
+      margin-bottom: 10px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+    }
+    .options li:hover {
+      background: #f8f9fa;
+      border-color: var(--accent);
+      transform: translateX(4px) scale(1.02);
+      font-size: 1.05rem;
+    }
+    .options li input { accent-color: var(--accent); cursor: pointer; width: 18px; height: 18px; }
+    .options li label { cursor: pointer; flex: 1; font-size: 1rem; color: #495057; }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      display: none;
+      font-size: 0.95rem;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: var(--correct-soft); color: var(--correct); border: 1px solid #b2f2bb; }
+    .feedback.wrong { background: var(--wrong-soft); color: var(--wrong); border: 1px solid #ffc9c9; }
+
+    .score-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 2px 8px var(--shadow);
+      display: none;
+      margin-top: 10px;
+    }
+    .score-panel.show { display: block; }
+    .score-panel h2 { color: var(--accent); font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+    .score-ring {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 6px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 18px auto;
+      font-size: 2rem; font-weight: 800; color: var(--accent);
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(232, 89, 12, 0.25);
+    }
+    .btn:hover {
+      background: #d1440a;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(232, 89, 12, 0.35);
+    }
+    .btn-secondary { background: #495057; }
+    .btn-secondary:hover { background: #343a40; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 600px) {
+      .question-card { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Math Quiz</h1>
+      <p>Decimals and mixed numbers practice.</p>
+    </header>
+
+    <form id="quiz-form">
+      <!-- Q1: Decimal reading -->
+      <div class="question-card" data-answer="B">
+        <h3>1. What is 0.6?</h3>
+        <div class="mini-passage">Sarah ate 0.6 of the pizza. What does this mean?</div>
+        <ul class="options">
+          <li><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. Six wholes</label></li>
+          <li><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. Six tenths</label></li>
+          <li><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. Six hundredths</label></li>
+          <li><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. Zero and six</label></li>
+        </ul>
+        <div class="feedback" id="fb-q1"></div>
+      </div>
+
+      <!-- Q2: Mixed number -->
+      <div class="question-card" data-answer="A">
+        <h3>2. What is 3 1/4?</h3>
+        <div class="mini-passage">The recipe needs 3 1/4 cups of flour.</div>
+        <ul class="options">
+          <li><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. Three wholes + one fourth</label></li>
+          <li><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. Three fourths</label></li>
+          <li><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. One third</label></li>
+          <li><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. Four wholes</label></li>
+        </ul>
+        <div class="feedback" id="fb-q2"></div>
+      </div>
+
+      <!-- Q3: Decimal equivalent -->
+      <div class="question-card" data-answer="C">
+        <h3>3. Which shows 1/2?</h3>
+        <div class="mini-passage">Half the cake is the same as...</div>
+        <ul class="options">
+          <li><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. 0.2</label></li>
+          <li><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. 0.25</label></li>
+          <li><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. 0.5</label></li>
+          <li><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. 0.75</label></li>
+        </ul>
+        <div class="feedback" id="fb-q3"></div>
+      </div>
+
+      <!-- Q4: Mixed identification -->
+      <div class="question-card" data-answer="B">
+        <h3>4. Which is a mixed number?</h3>
+        <div class="mini-passage">Look at these numbers:</div>
+        <ul class="options">
+          <li><input type="radio" name="q4" id="q4a" value="A"><label for="q4a">A. 3/4</label></li>
+          <li><input type="radio" name="q4" id="q4b" value="B"><label for="q4b">B. 2 3/5</label></li>
+          <li><input type="radio" name="q4" id="q4c" value="C"><label for="q4c">C. 1/2</label></li>
+          <li><input type="radio" name="q4" id="q4d" value="D"><label for="q4d">D. 5/1</label></li>
+        </ul>
+        <div class="feedback" id="fb-q4"></div>
+      </div>
+
+      <!-- Q5: Decimal place -->
+      <div class="question-card" data-answer="D">
+        <h3>5. In 0.34, what place is the 4?</h3>
+        <div class="mini-passage">0.34 is thirty-four hundredths.</div>
+        <ul class="options">
+          <li><input type="radio" name="q5" id="q5a" value="A"><label for="q5a">A. Tenths</label></li>
+          <li><input type="radio" name="q5" id="q5b" value="B"><label for="q5b">B. Ones</label></li>
+          <li><input type="radio" name="q5" id="q5c" value="C"><label for="q5c">C. Wholes</label></li>
+          <li><input type="radio" name="q5" id="q5d" value="D"><label for="q5d">D. Hundredths</label></li>
+        </ul>
+        <div class="feedback" id="fb-q5"></div>
+      </div>
+
+      <!-- Q6: Simplifying mixed -->
+      <div class="question-card" data-answer="A">
+        <h3>6. Simplify 1 2/4</h3>
+        <div class="mini-passage">2/4 is the same as 1/2.</div>
+        <ul class="options">
+          <li><input type="radio" name="q6" id="q6a" value="A"><label for="q6a">A. 1 1/2</label></li>
+          <li><input type="radio" name="q6" id="q6b" value="B"><label for="q6b">B. 3/4</label></li>
+          <li><input type="radio" name="q6" id="q6c" value="C"><label for="q6c">C. 1 1/4</label></li>
+          <li><input type="radio" name="q6" id="q6d" value="D"><label for="q6d">D. 2/2</label></li>
+        </ul>
+        <div class="feedback" id="fb-q6"></div>
+      </div>
+
+      <div style="text-align:center; margin-top: 10px;">
+        <button type="button" class="btn" id="check-btn">Check Answers</button>
+      </div>
+    </form>
+
+    <div class="score-panel" id="score-panel">
+      <h2>Quiz Complete!</h2>
+      <div class="score-ring" id="score-ring">0/6</div>
+      <p id="score-msg">Your score will appear here.</p>
+      <div style="margin-top: 12px;">
+        <button type="button" class="btn btn-secondary" onclick="location.reload()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const correctMessages = [
+        "Correct!",
+        "Great job!",
+        "Yes!",
+        "Perfect!",
+        "Well done!"
+      ];
+      const wrongMessages = [
+        "Not quite.",
+        "Try again.",
+        "No.",
+        "Wrong.",
+        "Keep trying."
+      ];
+
+      function random(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+      const cards = document.querySelectorAll('.question-card');
+      const checkBtn = document.getElementById('check-btn');
+      const scorePanel = document.getElementById('score-panel');
+      const scoreRing = document.getElementById('score-ring');
+      const scoreMsg = document.getElementById('score-msg');
+
+      checkBtn.addEventListener('click', () => {
+        let score = 0;
+        cards.forEach(card => {
+          const answer = card.getAttribute('data-answer');
+          const radios = card.querySelectorAll('input[type="radio"]');
+          const fb = card.querySelector('.feedback');
+          let selected = null;
+          radios.forEach(radio => {
+            if (radio.checked) selected = radio;
+          });
+          if (!selected) {
+            fb.textContent = "Select an answer.";
+            fb.className = "feedback show wrong";
+            return;
+          }
+          if (selected.value === answer) {
+            score++;
+            fb.textContent = random(correctMessages);
+            fb.className = "feedback show correct";
+          } else {
+            fb.textContent = random(wrongMessages);
+            fb.className = "feedback show wrong";
+          }
+        });
+
+        scoreRing.textContent = score + "/6";
+        let msg = "";
+        if (score === 6) msg = "Perfect! Math master!";
+        else if (score >= 4) msg = "Great work!";
+        else if (score >= 3) msg = "Good effort.";
+        else msg = "Practice more.";
+        scoreMsg.textContent = msg;
+        scorePanel.classList.add('show');
+        scorePanel.scrollIntoView({ behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>

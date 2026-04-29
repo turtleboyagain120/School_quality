@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocabulary — Introduction</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #212529;
+      --accent: #0ca678;
+      --accent-soft: #e6fcf5;
+      --card-bg: #ffffff;
+      --border: #e9ecef;
+      --shadow: rgba(0,0,0,0.04);
+      --note-bg: #ebfbee;
+      --note-border: #69db7c;
+      --success: #40c057;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    /* Brainnote Sidebar */
+    .brainnote {
+      position: sticky;
+      top: 24px;
+      background: var(--note-bg);
+      border: 2px solid var(--note-border);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 16px var(--shadow);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .brainnote:hover { transform: translateY(-4px); }
+    .brainnote h3 {
+      font-size: 1.1rem;
+      color: #2b8a3e;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brainnote ul {
+      list-style: none;
+      padding: 0;
+    }
+    .brainnote li {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      padding-left: 24px;
+      position: relative;
+      color: #495057;
+    }
+    .brainnote li::before {
+      content: "💡";
+      position: absolute;
+      left: 0;
+      top: 1px;
+    }
+
+    /* Main Content */
+    .main-content { display: flex; flex-direction: column; gap: 24px; }
+
+    header {
+      text-align: center;
+      margin-bottom: 8px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    header h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -1px;
+      line-height: 1.2;
+    }
+    header p {
+      font-size: 1.15rem;
+      color: #868e96;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 8px var(--shadow);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+      animation: fadeInUp 0.6s ease-out backwards;
+    }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
+    .card:nth-child(4) { animation-delay: 0.3s; }
+    .card:nth-child(5) { animation-delay: 0.4s; }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    }
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .card p, .card li {
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      color: #495057;
+    }
+    ul { padding-left: 22px; }
+    li { margin-bottom: 8px; }
+
+    .passage-box {
+      background: #f8f9fa;
+      border-left: 4px solid var(--accent);
+      padding: 18px 22px;
+      border-radius: 0 12px 12px 0;
+      margin: 18px 0;
+      font-style: italic;
+      color: #495057;
+      transition: background 0.2s ease;
+    }
+    .passage-box:hover { background: #f1f3f5; }
+
+    .question-demo {
+      background: var(--accent-soft);
+      border: 1px solid #b2f2bb;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 16px;
+      transition: transform 0.2s ease;
+    }
+    .question-demo:hover { transform: scale(1.01); }
+    .question-demo strong { color: var(--accent); }
+
+    .btn {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 16px 36px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      box-shadow: 0 4px 12px rgba(12, 166, 120, 0.25);
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #099268;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(12, 166, 120, 0.35);
+    }
+    .btn:active { transform: translateY(-1px) scale(0.98); }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #adb5bd;
+      animation: fadeInUp 0.6s ease-out 0.5s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 2rem; }
+      .card { padding: 22px; }
+      .brainnote { position: relative; top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ELI5 Brainnote Sidebar -->
+    <aside class="brainnote">
+      <h3>🧠 Easy Notes</h3>
+      <ul>
+        <li>Context clues are hints in the sentence that help you guess a word's meaning.</li>
+        <li>Look for words like "because," "so," or "but" — they give clues!</li>
+        <li>If you see a hard word, read the whole sentence again slowly.</li>
+        <li>Sometimes the sentence before or after explains the word.</li>
+        <li>Replace the hard word with each answer choice — does it make sense?</li>
+        <li>Watch for opposite meanings with words like "unlike" or "however."</li>
+        <li>A synonym nearby often means the same thing as the tricky word.</li>
+        <li>Don't panic if you don't know the word — the story usually helps you!</li>
+        <li>Picture the scene in your head. It makes guessing easier.</li>
+        <li>Take your time. Rushing makes you miss the clues!</li>
+        <li>If two answers seem close, pick the one that fits the feeling of the story.</li>
+        <li>Practice every day — your vocabulary grows like a muscle!</li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <header>
+        <h1>Vocabulary in Context</h1>
+        <p>Learn new words by reading between the lines.</p>
+      </header>
+
+      <section class="card">
+        <h2>What is Vocabulary in Context?</h2>
+        <p>Vocabulary in context means figuring out what a word means by looking at the words and sentences around it. You do not need a dictionary — the story gives you clues!</p>
+        <p>Strong readers use <strong>context clues</strong> to unlock meaning. They notice synonyms, antonyms, explanations, and examples hidden right in the paragraph.</p>
+      </section>
+
+      <section class="card">
+        <h2>Example Passage</h2>
+        <div class="passage-box">
+          <p>The old bridge was so <strong>fragile</strong> that the town closed it to cars. Even a small truck might make the wooden beams crack and splinter.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Two Kinds of Context Clues</h2>
+        <p>Authors help readers in two main ways:</p>
+        <ul>
+          <li><strong>Direct Explanation:</strong> The meaning is spelled out nearby.</li>
+          <li><strong>Indirect Hint:</strong> You must infer from the situation.</li>
+        </ul>
+
+        <div class="question-demo">
+          <p><strong>Direct Example:</strong> What does <em>fragile</em> mean?</p>
+          <p style="margin-left:18px; color:#555;">Answer: <em>Easy to break</em> — "crack and splinter" tells you directly.</p>
+        </div>
+
+        <div class="question-demo">
+          <p><strong>Indirect Example:</strong> Why did the town close the bridge?</p>
+          <p style="margin-left:18px; color:#555;">Answer: <em>They were worried it would break.</em> — not said directly, but strongly suggested.</p>
+        </div>
+      </section>
+
+      <section class="card" style="text-align:center;">
+        <h2>Ready to practice?</h2>
+        <p>Take a quiz with 20 carefully crafted paragraph questions.</p>
+        <a class="btn" href="quiz.html">Start the Quiz</a>
+      </section>
+
+      <footer>Built for focused, stylish learning.</footer>
+    </div>
+  </div>
+</body>
+</html>
+
