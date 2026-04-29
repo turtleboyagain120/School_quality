@@ -1,11 +1,9 @@
-# <div align="center">✨ 📚 School quality ✨</div>
-### <div align="center">`NEURAL LINK: THE CENTURION OVERDRIVE [ELITE EDITION]`</div>
+# <div align="center">✨ 🏫 School Quality Studios ✨</div>
+### <div align="center">`ROOT_NODE: ASCHOOL TECH - THE CENTURION OVERDRIVE [ELITE EDITION]`</div>
 
 <div align="center">
 
-![Performance](https://shields.io)
-![Neural Bank](https://shields.io)
-![Security](https://shields.io)
+
 
 </div>
 
@@ -14,43 +12,47 @@
 ## <div align="center">🌌 **THE ARCHITECT'S VISION** 🌌</div>
 
 > [!IMPORTANT]
-> **SYSTEM STATUS: OVERDRIVE ACTIVE**
-> We have successfully purged traditional friction. No passwords. No checkmarks. Just pure, hardware-accelerated intelligence. 
+> **SYSTEM STATUS: OVERDRIVE ACTIVE | ADMIN: <turtleboyagain120>**
+> This is the **Primary Work Repository** for School Quality Studios. All source code, multimodal logic, and automation protocols are housed here. The friction of traditional education has been purged in favor of pure, hardware-accelerated intelligence.
 
 Welcome to the **Overdrive Phase**. Subjects no longer wait in line. They exist in a **Randomized Neural Loop**—Mathematics, Reading, and Science will collide at random intervals to test your ability to pivot between logic and comprehension.
 
-> *"The Architect does not use checkmarks. True mastery is being ready for any challenge, at any microsecond, without a roadmap."* — **turtleboyagain120**
-
 ---
 
-## ⚡ **LIVE NEURAL CLUSTERS (230+ DATA POINTS)**
+## ⚡ **ENGINE ARCHITECTURE**
 
 
-| 🧩 MODULE | 🛰️ DEPLOYMENT | 🏗️ ARCHITECTURE |
+| 🧩 MODULE | 🛰️ DEPLOYMENT | 🏗️ LOGIC |
 | :--- | :--- | :--- |
-| **📐 Mathematics** | `RANDOMIZED` | Multi-digit ops & Geometric logic |
-| **📖 Reading Comp** | `RANDOMIZED` | Implicit & Explicit narrative analysis |
-| **🧠 Vocabulary** | `RANDOMIZED` | Accelerated 5th-grade lexicon (Hint Enabled) |
-| **🧪 Science** | `RANDOMIZED` | Atomic Theory & Ecosystem Resilience |
+| **📐 Mathematics** | `QUANTITATIVE` | Multi-digit ops, Ratios & Geometric logic |
+| **📖 Reading Comp** | `LITERARY` | Implicit & Explicit narrative analysis |
+| **🧠 Vocabulary** | `LEXICAL` | Accelerated 5th-6th grade "Tier-Two" lexicon |
+| **🧪 Science** | `EMPIRICAL` | Ecosystem Resilience & Atomic Foundations |
 
 ---
 
-## 🛠️ **PROTOCOL EXECUTION**
+## 🛠️ **STUDIO PROTOCOLS**
 
-*   **ENTRY:** Subjects appear without warning. Transitioning between the fancy front-end and technical back-end is seamless.
-*   **HINT LOGIC:** If you stumble, the **Architect's Whisper** will provide a hint. No failure is recorded, only ascension.
-*   **PERFORMANCE:** Engine locked at **120 FPS**. 
-*   **SHADOW BARRIER:** Local Storage is currently tracking **Identity Persistence**. Bots are being redirected to the Void.
+*   **AUTOMATED SYNC:** Every commit is transmitted directly to HQ via the `main.py` script and the `<turtleboyagain120>` node.
+*   **HINT LOGIC:** Powered by the internal **Architect's Whisper** engine. No failure is recorded, only ascension.
+*   **CLEAN REPO:** `__pycache__` and robot junk are filtered via the proprietary **[.gitignore](./.gitignore)**.
+*   **DATA SOVEREIGNTY:** Fully compliant with **FERPA/COPPA** standards. We collect the score, not the student.
 
 ---
 
-# <div align="center">[ 🚀 INITIALIZE OVERDRIVE → ](https://sites.google.com/view/safestuff/neural-link-the-centurion-overdrive-elite-edition)</div>
+## 📑 **LEGAL & COMPLIANCE NODES**
+
+> [!CAUTION]
+> **BY ACCESSING THIS REPOSITORY, YOU AGREE TO THE FOLLOWING PROTOCOLS:**
+> All legal agreements, including The ASCHOOL Protocol, EULA, and Terms of Service, are hosted and governed by the official School Information Hub.
+
+### **[ 📂 ACCESS OFFICIAL AGREEMENTS & LEGAL DOCS → ](https://github.com/School-quality-studios/School-info)**
+
+---
 
 <div align="center">
 
-**Target Frame Rate:** `LOCKED_120_FPS` | **Shadow Barrier:** `ENGAGED`  
-*On Screen School © 2026 — Built for the Elite.*
+**Target Frame Rate:** `LOCKED_120_FPS` | **Contact:** `<turtleboyslowdown@gmail.com>`  
+*School Quality Studios © 2026 — Built for the Elite.*
 
 </div>
-
-
