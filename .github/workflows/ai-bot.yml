@@ -1,4 +1,4 @@
-name: AI Code Reviewer and Patcher
+name: Local Offline AI Code Reviewer
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ai-code-patcher:
+  local-ai-patcher:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -15,16 +15,21 @@ jobs:
           token: ${{ secrets.MY_GITHUB_PAT }}
           fetch-depth: 0
 
+      - name: Install Ollama (Local AI Engine)
+        run: |
+          curl -fsSL https://ollama.com | sh
+          ollama serve &
+          sleep 5
+
+      - name: Download Lightweight Code Model
+        run: ollama pull qwen2.5-coder:1.5b
+
       - name: Set Up Python Environment
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Dependencies
-        run: pip install openai
-
-      - name: Run AI Analysis and Patching
+      - name: Run Local AI Patching Script
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python .github/scripts/ai_agent.py
+        run: python .github/scripts/local_ai_agent.py
