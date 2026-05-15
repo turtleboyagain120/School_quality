@@ -1,0 +1,30 @@
+name: AI Code Reviewer and Patcher
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  ai-code-patcher:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.MY_GITHUB_PAT }}
+          fetch-depth: 0
+
+      - name: Set Up Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install openai
+
+      - name: Run AI Analysis and Patching
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python .github/scripts/ai_agent.py
