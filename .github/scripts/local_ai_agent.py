@@ -15,17 +15,13 @@ def query_local_ai(prompt):
         "model": "qwen2.5-coder:1.5b",
         "prompt": prompt,
         "stream": False,
-        "options": {
-            "temperature": 0.2
-        }
+        "options": {"temperature": 0.2}
     }
-    
     req = urllib.request.Request(
         url, 
         data=json.dumps(data).encode('utf-8'), 
         headers={'Content-Type': 'application/json'}
     )
-    
     try:
         with urllib.request.urlopen(req) as response:
             res_data = json.loads(response.read().decode('utf-8'))
@@ -36,18 +32,20 @@ def query_local_ai(prompt):
 
 def main():
     print("Reading repository files...")
-    target_file = "src/main.py"  # Change this to your main development file
+    target_file = "src/main.py"
     
     if not os.path.exists(target_file):
-        print(f"Target file {target_file} not found. Skipping.")
-        return
+        print(f"Target file {target_file} not found. Creating default buggy file to test.")
+        os.makedirs("src", exist_ok=True)
+        with open(target_file, "w") as f:
+            f.write("def calc(a):\n    return sum(a)/len(a)\nprint(calc([]))")
+        code_content = "def calc(a):\n    return sum(a)/len(a)\nprint(calc([]))"
+    else:
+        with open(target_file, "r") as f:
+            code_content = f.read()
 
-    with open(target_file, "r") as f:
-        code_content = f.read()
-
-    # Construct strict system instructions directly into the local prompt
     system_prompt = (
-        "You are an expert developer. Analyze the provided code for bugs, logic errors, or inefficiencies. "
+        "You are an expert developer. Analyze the provided code for bugs. "
         "Output the completely fixed, working file. Do NOT include markdown blocks, explanations, or backticks. "
         f"Output raw code only.\n\nReview and patch this code:\n\n{code_content}"
     )
@@ -59,14 +57,10 @@ def main():
         print("Empty or failed response from local AI. Exiting.")
         return
 
-    # Clean up any potential markdown structural formatting the AI might add
-    if patched_code.startswith("```"):
+    if "```" in patched_code:
         lines = patched_code.splitlines()
-        if lines[0].startswith("```"):
-            lines = lines[1:]
-        if lines[-1].startswith("```"):
-            lines = lines[:-1]
-        patched_code = "\n".join(lines).strip()
+        cleaned = [l for l in lines if not l.strip().startswith("```")]
+        patched_code = "\n".join(cleaned).strip()
 
     print("Applying local AI patches to codebase...")
     with open(target_file, "w") as f:
