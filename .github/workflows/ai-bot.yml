@@ -20,11 +20,7 @@ jobs:
       - name: Initialize CodeQL Engine
         uses: github/codeql-action/init@v3
         with:
-          languages: python  # Change to javascript, java, etc. if needed
-
-      - name: Auto-Scan and Detect Flaws
-        uses: github/github-actions-runner@v2
-        # If your project requires compilation, add build steps here
+          languages: python
 
       - name: Generate Code Recommendations
         uses: github/codeql-action/analyze@v3
