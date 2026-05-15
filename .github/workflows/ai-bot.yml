@@ -17,9 +17,14 @@ jobs:
 
       - name: Install Ollama (Local AI Engine)
         run: |
-          curl -fsSL https://ollama.com | sh
+          # Pulls the official installation file and executes it with admin permissions
+          curl -fsSL https://ollama.com | sudo sh
+          
+          # Start the server tool explicitly in the background
           ollama serve &
-          sleep 5
+          
+          # Give the background system server 10 seconds to fully spin up
+          sleep 10
 
       - name: Download Lightweight Code Model
         run: ollama pull qwen2.5-coder:1.5b
