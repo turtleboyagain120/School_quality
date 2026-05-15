@@ -1,60 +1,38 @@
-import os
-import subprocess
-from openai import OpenAI
+name: Local Offline AI Code Reviewer
 
-def run_command(command):
-    result = subprocess.run(command, shell=True, text=True, capture_output=True)
-    if result.returncode != 0:
-        print(f"Error executing: {command}\n{result.stderr}")
-    return result.stdout.strip()
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
 
-def main():
-    # 1. Initialize the OpenAI Brain
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-    
-    # 2. Gather modified files or target files (e.g., all Python files)
-    print("Reading repository files...")
-    target_file = "src/main.py"  # Change this to your main development file
-    
-    if not os.path.exists(target_file):
-        print(f"Target file {target_file} not found. Skipping.")
-        return
+jobs:
+  local-ai-patcher:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.MY_GITHUB_PAT }}
+          fetch-depth: 0
 
-    with open(target_file, "r") as f:
-        code_content = f.read()
+      - name: Install Ollama (Local AI Engine)
+        run: |
+          curl -fsSL https://ollama.com | sh
+          # Start the background local AI server
+          ollama serve &
+          # Wait for server startup
+          sleep 5
 
-    # 3. Prompt the AI to analyze, fix bugs, and return ONLY the pure code
-    print("Communicating with AI brain...")
-    response = client.chat.completions.create(
-        model="gpt-4o",  # Uses robust analytical model
-        messages=[
-            {"role": "system", "content": "You are an expert developer. Analyze the provided code for bugs, logic errors, or inefficiencies. Output the completely fixed, working file. Do NOT include markdown blocks, explanations, or backticks. Output raw code only."},
-            {"role": "user", "content": f"Review and patch this code:\n\n{code_content}"}
-        ],
-        temperature=0.2
-    )
-    
-    patched_code = response.choices[0].message.content.strip()
+      - name: Download Lightweight Code Model
+        # Downloads Qwen2.5-Coder (1.5B), optimized for code processing on standard hardware
+        run: ollama pull qwen2.5-coder:1.5b
 
-    # 4. Write the AI's patches directly back over the file
-    print("Applying AI patches to codebase...")
-    with open(target_file, "w") as f:
-        f.write(patched_code)
+      - name: Set Up Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    # 5. Use your PAT authorization to stage, commit, and push back to main
-    print("Pushing AI modifications back to GitHub...")
-    run_command("git config --global user.name 'AI-Automation-Bot'")
-    run_command("git config --global user.email 'ai-bot@internal.automation'")
-    run_command(f"git add {target_file}")
-    
-    # Only commit if changes actually occurred
-    status = run_command("git status --porcelain")
-    if status:
-        run_command("git commit -m '🤖 AI automated optimization and bug patch'")
-        run_command("git push origin main")
-        print("✅ Code successfully analyzed, patched, and pushed!")
-    else:
-        print("✅ AI reviewed the code: No bugs found. No changes needed.")
-
-if __name__ == "__main__":
-    main()
+      - name: Run Local AI Patching Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
+        run: python .github/scripts/local_ai_agent.py
