@@ -1,4 +1,4 @@
-name: Local Offline AI Code Reviewer
+name: Native Code Analysis
 
 on:
   push:
@@ -6,35 +6,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  local-ai-patcher:
+  analyze-code:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Initialize CodeQL Engine
+        uses: github/codeql-action/init@v3
         with:
-          token: ${{ secrets.MY_GITHUB_PAT }}
-          fetch-depth: 0
+          languages: python  # Change to javascript, java, etc. if needed
 
-      - name: Install Ollama (Local AI Engine)
-        run: |
-          # Pulls the official installation file and executes it with admin permissions
-          curl -fsSL https://ollama.com | sudo sh
-          
-          # Start the server tool explicitly in the background
-          ollama serve &
-          
-          # Give the background system server 10 seconds to fully spin up
-          sleep 10
+      - name: Auto-Scan and Detect Flaws
+        uses: github/github-actions-runner@v2
+        # If your project requires compilation, add build steps here
 
-      - name: Download Lightweight Code Model
-        run: ollama pull qwen2.5-coder:1.5b
-
-      - name: Set Up Python Environment
-        uses: actions/setup-python@v5
+      - name: Generate Code Recommendations
+        uses: github/codeql-action/analyze@v3
         with:
-          python-version: '3.11'
-
-      - name: Run Local AI Patching Script
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
-        run: python .github/scripts/local_ai_agent.py
+          category: "/language:python"
