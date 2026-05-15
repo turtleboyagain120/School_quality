@@ -1,0 +1,7 @@
+├── .github/
+│   ├── scripts/
+│   │   └── local_ai_agent.py    <-- (From the previous message)
+│   └── workflows/
+│       └── ai-bot.yml           <-- (From the previous message)
+└── src/
+    └── main.py                  <-- (This file)
